@@ -116,6 +116,11 @@ def bucle_juego():
     global saltarMovi
     caer= False # define si el personaje cae solo verticalmente
     caerMovi=False# define si el personaje cae hacia adelante o hacia atras
+
+    pygame.mixer.music.load('music.mp3')
+    pygame.mixer.music.set_endevent(pygame.constants.USEREVENT)
+    pygame.mixer.music.play()
+
     
 #BUCLE PRINCIPAL DEL JUEGO
     while True:
