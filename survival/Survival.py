@@ -87,7 +87,7 @@ def movimiento_teclado_P1():
         cont+=1
         direccionP1=True
     # lo mismo del if anterior pero con la tecla izquierda
-    elif teclado[K_LEFT] and saltar == False and saltarMovi==False:
+    elif teclado[K_LEFT] and saltar == False and saltarMovi==False and ubicacionP1>=3:
         ubicacionP1-=2
         cont+=1
         direccionP1=False
