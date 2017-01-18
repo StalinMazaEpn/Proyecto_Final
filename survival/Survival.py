@@ -82,7 +82,7 @@ def movimiento_teclado_P1():
 
     # si presiono tecla derecha y las variables de saltar son falsas
     #significara que el personaje solo caminara
-    elif teclado[K_RIGHT] and saltar== False and saltarMovi==False:
+    elif teclado[K_RIGHT] and saltar== False and saltarMovi==False and ubicacionP1<=860:
         ubicacionP1 +=2
         cont+=1
         direccionP1=True
