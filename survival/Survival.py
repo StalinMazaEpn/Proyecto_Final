@@ -73,11 +73,11 @@ def movimiento_teclado_P1():
     
    #si presiona espacio, flecha derecha y la variable saltarMovi es falsa,
     #saltarMovi se igualara a Verdadero y el salto sera hacia adelante
-    if teclado[K_SPACE] and teclado[K_RIGHT] == True and saltarMovi == False:
+    if teclado[K_SPACE] and teclado[K_RIGHT] == False and saltarMovi == False:
         saltarMovi = True
 
     #lo mismo del if anterior pero con la tecla izquierda y salto sera hacia atras
-    elif teclado[K_SPACE] and teclado[K_LEFT]== True  and saltarMovi == False:
+    elif teclado[K_SPACE] and teclado[K_LEFT]== False  and saltarMovi == False:
         saltarMovi = True
 
     # si presiono tecla derecha y las variables de saltar son falsas
