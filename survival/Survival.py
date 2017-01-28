@@ -106,8 +106,8 @@ def bucle_juego():
 
     screen = pygame.display.set_mode((anchoPantalla, altoPantalla))#ancho y alto de pantalla
     pygame.display.set_caption("SURVIVAL")#titulo  a la ventana
-    fondo = pygame.image.load('fondo1.jpg').convert()# fondo para la pantalla
-    personaje1= pygame.image.load('personaje1.png').convert()#sprites personaje1
+    fondo = pygame.image.load('imagenes/fondo1.jpg').convert()# fondo para la pantalla
+    personaje1= pygame.image.load('imagenes/personaje1.png').convert()#sprites personaje1
     color= personaje1.get_at((0,0))# color transparente
     personaje1.set_colorkey(color,RLEACCEL)#hace transparente el fondo del sprite del personaje
     personaje1_inv= pygame.transform.flip(personaje1,True,False);#Invierte el sprite,TRUE invierte la imagen al eje X, y FLASE quiere invertir de arriba poara abajo

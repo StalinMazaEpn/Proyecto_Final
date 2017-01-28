@@ -8,12 +8,12 @@ color = (225,225,225)
 pygame.init()#sentencia obligatoria
 ventana = pygame.display.set_mode((600,500))#recibe una tupla
 pygame.display.set_caption("Menu")
-imagen1 = pygame.image.load("boton1.jpg")
-imagen2 = pygame.image.load("boton1.1.jpg")
-imagen3 = pygame.image.load("boton2.jpg")
-imagen4 = pygame.image.load("boton2.1.jpg")
-imagen5 = pygame.image.load("boton3.jpg")
-imagen6 = pygame.image.load("boton3.1.jpg")
+imagen1 = pygame.image.load("imagenes/boton1.jpg")
+imagen2 = pygame.image.load("imagenes/boton1.1.jpg")
+imagen3 = pygame.image.load("imagenes/boton2.jpg")
+imagen4 = pygame.image.load("imagenes/boton2.1.jpg")
+imagen5 = pygame.image.load("imagenes/boton3.jpg")
+imagen6 = pygame.image.load("imagenes/boton3.1.jpg")
 
 cursor1 = Cursor()
 boton1 = Boton(imagen1,imagen2,200,10)
