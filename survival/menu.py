@@ -2,7 +2,6 @@ import pygame,sys
 ##from pygame.locals import *
 from Clases import Cursor,Boton
 from Survival import bucle_juego
-
 color = (225,225,225)
 ##color2 = pygame.Color(255,120,9)
 
@@ -29,7 +28,7 @@ while True:
         if evento.type == pygame.MOUSEBUTTONDOWN:
             if cursor1.colliderect(boton1.rect):
                 print("boton1")
-                buble_juego()
+                bucle_juego()
             elif cursor1.colliderect(boton2.rect):
                 print("boton2")
             elif cursor1.colliderect(boton3.rect):
@@ -37,6 +36,7 @@ while True:
                 sys.exit()
         if evento.type == pygame.QUIT:
             pygame.quit()#detenemos todos los modulos
+            sys.exit()
             
     cursor1.update()
     boton1.update(ventana,cursor1)
