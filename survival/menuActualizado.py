@@ -22,7 +22,7 @@ cursor1 = Cursor()
 boton1 = Boton(imagen1,imagen2,285,250)
 boton2 = Boton(imagen3,imagen4,285,350)
 boton3 = Boton(imagen5,imagen6,285,450)
-pygame.mixer.music.load("Outrun - Rush.mp3")
+pygame.mixer.music.load("intro.mp3")
 pygame.mixer.music.play()
 #mostrar esa ventana
 while True:
