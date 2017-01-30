@@ -112,6 +112,8 @@ def bucle_juego():
     personaje1.set_colorkey(color,RLEACCEL)#hace transparente el fondo del sprite del personaje
     personaje1_inv= pygame.transform.flip(personaje1,True,False);#Invierte el sprite,TRUE invierte la imagen al eje X, y FLASE quiere invertir de arriba poara abajo
 
+    bloque = pygame.image.load('Bloque.png')
+    
     clock = pygame.time.Clock()# tiempo en de los fotogramas
     global saltarMovi
     caer= False # define si el personaje cae solo verticalmente
@@ -131,6 +133,24 @@ def bucle_juego():
         
         fondo= pygame.transform.scale(fondo,(1000,400)) #Agranda o Achica la imagen segun las dimensiones que se de
         screen.blit(fondo,(0,0))#dibuja la imagen
+
+        ##Posiciones de los bloque en la ventana
+        bloque= pygame.transform.scale(bloque,(30,30))
+        screen.blit(bloque,(150,310))
+        screen.blit(bloque,(190,270))
+        screen.blit(bloque,(230,230))
+        screen.blit(bloque,(270,190))
+        screen.blit(bloque,(310,150))
+        screen.blit(bloque,(350,110))
+        
+        screen.blit(bloque,(390,150))
+        screen.blit(bloque,(430,190))
+        screen.blit(bloque,(470,230))
+        screen.blit(bloque,(510,270))
+        screen.blit(bloque,(550,310))
+        
+
+        
         global ubicacionP1
         global ubicacionP1Y
         global saltar,i
@@ -199,7 +219,7 @@ def bucle_juego():
                 pygame.quit()
                 sys.exit()
 
-##bucle_juego()
+bucle_juego()
 
 
 
