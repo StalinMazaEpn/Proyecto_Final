@@ -23,6 +23,8 @@ ubicacionP1Y=280 # ubicacion del personaje 1 en el eje Y
 ubicacionP2=250 # ubicacion del personaje 2 en el eje X
 ubicacionP2Y=180 # ubicacion del personaje 2 en el eje Y
 
+cont=9  # contador que aumentara en el bucle principal para la velocidad de los sprites
+cont2=5
 direccionP1= True
 
 direccionP2= True
