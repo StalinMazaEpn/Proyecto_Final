@@ -1,10 +1,6 @@
 import pygame,sys
-##from pygame.locals import *
 from Clases import Cursor,Boton
 from Survival import bucle_juego
-
-color = (225,225,225)
-##color2 = pygame.Color(255,120,9)
 
 pygame.init()#sentencia obligatoria
 ventana = pygame.display.set_mode((800,600))#recibe una tupla
@@ -26,7 +22,6 @@ pygame.mixer.music.load("audio/intro.mp3")
 pygame.mixer.music.play()
 #mostrar esa ventana
 while True:
-    ventana.fill(color)#llena a la ventana
     fondo = pygame.transform.scale(fondo,(800,600))
     ventana.blit(fondo,(0,0))
     
