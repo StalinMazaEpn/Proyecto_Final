@@ -20,8 +20,12 @@ altoPantalla = 380
 ubicacionP1=250 # ubicacion del personaje 1 en el eje X
 ubicacionP1Y=280 # ubicacion del personaje 1 en el eje Y
 
-cont=9  # contador que aumentara en el bucle principal para la velocidad de los sprites
+ubicacionP2=250 # ubicacion del personaje 2 en el eje X
+ubicacionP2Y=180 # ubicacion del personaje 2 en el eje Y
+
 direccionP1= True
+
+direccionP2= True
 i=0
 
 NaveD = True
@@ -151,6 +155,37 @@ def movimiento_Personaje1():
         i=8
         cont=0
  
+def movimiento_Personaje2():
+    global cont2  
+    contCambiar=5
+    global i
+    posicionDer[0]=(0,0,91,175)#posicion de cada sprite x,y, ancho, alto
+    posicionDer[1]=(90,0,95,175)
+    posicionDer[2]=(180,0,92,175)
+    posicionDer[3]=(270,0,94,175)
+    posicionDer[4]=(3600,0,95,175)
+   
+    posicionIzq[0]=(405,0,91,175)
+    posicionIzq[1]=(311,0,94,175)
+    posicionIzq[2]=(219,0,90,175)
+    posicionIzq[3]=(195,0,92,175)
+    posicionIzq[4]=(89,0,89,175)
+    
+    # se va multiplicando contador cambiar, cada que es igual al cont del personaje
+     #para ir cambiando de sprites
+    if cont2==contCambiar:
+        i=0
+        
+    if cont2==contCambiar*1:
+        i=1
+    if cont2==contCambiar*2:
+        i=2
+    if cont2==contCambiar*3:
+        i=3
+    if cont2==contCambiar*4:
+        i=4
+        cont2=0
+
 
 def movimiento_teclado_P1():
     teclado = pygame.key.get_pressed()    
@@ -171,7 +206,46 @@ def movimiento_teclado_P1():
             direccionP1=False            
     else :
          cont=9
-       
+
+#movimiento del personaje 2
+def movimiento_teclado_P2():
+    teclado = pygame.key.get_pressed()    
+
+    global ubicacionP2
+    global i
+    global cont2, direccionP1, saltar, saltarMovi,i
+    
+   #si presiona espacio, flecha derecha y la variable saltarMovi es falsa,
+    #saltarMovi se igualara a Verdadero y el salto sera hacia adelante
+    if teclado[K_SPACE] and teclado[K_RIGHT] == True and saltarMovi == False:
+        saltarMovi = True
+
+    #lo mismo del if anterior pero con la tecla izquierda y salto sera hacia atras
+    elif teclado[K_SPACE] and teclado[K_LEFT]== True  and saltarMovi == False:
+        saltarMovi = True
+
+    # si presiono tecla derecha y las variables de saltar son falsas
+    #significara que el personaje solo caminara
+    elif teclado[K_RIGHT] and saltar== False and saltarMovi==False:
+        ubicacionP2 +=2
+        cont2+=1
+        direccionP2=True
+    # lo mismo del if anterior pero con la tecla izquierda
+    elif teclado[K_LEFT] and saltar == False and saltarMovi==False:
+        ubicacionP2-=2
+        cont2+=1
+        direccionP2=False
+        
+    #si presion espacio y las variables para saltar son falsas
+    #significara que el personaje solo saltara verticalmente
+    elif teclado[K_SPACE] and saltar== False and saltarMovi==False:
+        saltar=True
+        
+    #si nada de esto sucede el personaje quedara quieto con el sprite 0
+    else:
+        i=0
+
+             
 def bucle_juego():
     salir = False
     pygame.init()# inicializa pygame
@@ -184,6 +258,9 @@ def bucle_juego():
     personaje1_inv= pygame.transform.flip(personaje1,True,False);
     #Invierte el sprite,TRUE invierte la imagen al eje X, y
     #FLASE quiere invertir de arriba poara abajo
+    ##personaje2= imagen('imagenes/personaje2.png',True)#sprites personaje1
+    ##personaje2_inv= pygame.transform.flip(personaje2,True,False);  
+  
     bloque = pygame.image.load('imagenes/Bloque.png')
     #-----------------------NAVE Y DISPARO    
     imgN=pygame.image.load("imagenes/nave.png").convert_alpha()
