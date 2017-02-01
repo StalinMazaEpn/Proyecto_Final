@@ -219,7 +219,7 @@ def bucle_juego():
                 pygame.quit()
                 sys.exit()
 
-bucle_juego()
+##bucle_juego()
 
 
 
