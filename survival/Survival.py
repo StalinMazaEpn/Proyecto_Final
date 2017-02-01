@@ -299,7 +299,9 @@ def bucle_juego():
         #-------------------------------------------------------
         for eventos in pygame.event.get():# determina si el usuario dio presiona salir y cierra el juego
             if eventos.type == QUIT:
-                salir = True            
+                salir = True
+                pygame.quit()#detenemos todos los modulos
+                sys.exit()
         pygame.display.flip()#actualiza la pantalla
         reloj.tick(50)
         
