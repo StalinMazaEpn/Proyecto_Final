@@ -11,7 +11,7 @@ class Boton(pygame.sprite.Sprite):
         self.imagenNormal = imagen1
         self.imagenSeleccion = imagen2
         self.imagenActual= self.imagenNormal
-        self.sonido = pygame.mixer.Sound("laser.ogg")
+        self.sonido = pygame.mixer.Sound("audio/laser.ogg")
         self.continuar = True
         self.x=0
         self.y=0
