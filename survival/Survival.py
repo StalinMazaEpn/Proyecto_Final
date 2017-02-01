@@ -14,8 +14,17 @@ i=0
 posicionDer= {} #comienza y  finaliza cada sprite del personaje
 posicionIzq={}#comienza y  finaliza cada sprite del personaje de manera inversa
 saltar= False # determina si salta el personaje o esta en el suelo
-saltarMovi=False# determina si el personaje salto al presionar tecla derecha o izquierda
 
+def imagen(filename, transparent=False):
+        try: image = pygame.image.load(filename)
+        except pygame.error.message:
+                raise SystemExit.message
+        image = image.convert()
+        if transparent:
+                color = image.get_at((0,0))
+                image.set_colorkey(color, RLEACCEL)
+        return image
+    
 def movimiento_Personaje1():
     global cont  
     contCambiar=9
@@ -45,26 +54,48 @@ def movimiento_Personaje1():
     if cont==contCambiar:
         i=0
         
-    if cont==contCambiar*1:
-        i=1
     if cont==contCambiar*2:
-        i=2
+        i=1
     if cont==contCambiar*3:
-        i=3
+        i=2
     if cont==contCambiar*4:
-        i=4
+        i=3
     if cont==contCambiar*5:
-       i=5
+        i=4
     if cont==contCambiar*6:
-        i=6
+       i=5
     if cont==contCambiar*7:
-        i=7
+        i=6
     if cont==contCambiar*8:
+        i=7
+    if cont==contCambiar*9:
         i=8
         cont=0
  
 
 def movimiento_teclado_P1():
+    #COMPROBACION NUEVA, DE SALTO DEL PERSONAJE
+    teclado = pygame.key.get_pressed()
+    global ubicacionP1
+    global cont, direccionP1, saltar
+
+
+    if teclado[K_SPACE]:
+            saltar=True
+    if teclado[K_RIGHT] and ubicacionP1<=860: # ubicacionp1 <=860 detecta colision en pared derecha
+            ubicacionP1+=2
+            cont+=1
+            direccionP1=True
+    elif teclado[K_LEFT] and ubicacionP1>=3:
+            ubicacionP1-=2
+            cont+=1
+            direccionP1=False            
+    else :
+         cont=9
+
+
+''' COMPROBACION DE SALTO ANTIGUO 
+    
     teclado = pygame.key.get_pressed()
 
     global ubicacionP1
@@ -99,25 +130,21 @@ def movimiento_teclado_P1():
         
     #si nada de esto sucede el personaje quedara quieto con el sprite 0
     else:
-        i=0
+        i=0'''
 
 def bucle_juego():
     pygame.init()# inicializa pygame
 
     screen = pygame.display.set_mode((anchoPantalla, altoPantalla))#ancho y alto de pantalla
     pygame.display.set_caption("SURVIVAL")#titulo  a la ventana
-    fondo = pygame.image.load('imagenes/fondo1.jpg').convert()# fondo para la pantalla
-    personaje1= pygame.image.load('imagenes/personaje1.png').convert()#sprites personaje1
-    color= personaje1.get_at((0,0))# color transparente
-    personaje1.set_colorkey(color,RLEACCEL)#hace transparente el fondo del sprite del personaje
+    fondo = imagen('imagenes/fondo1.jpg')# fondo para la pantalla
+    personaje1= imagen('imagenes/personaje1.png',True)#sprites personaje1
     personaje1_inv= pygame.transform.flip(personaje1,True,False);#Invierte el sprite,TRUE invierte la imagen al eje X, y FLASE quiere invertir de arriba poara abajo
 
     bloque = pygame.image.load('Bloque.png')
     
     clock = pygame.time.Clock()# tiempo en de los fotogramas
-    global saltarMovi
     caer= False # define si el personaje cae solo verticalmente
-    caerMovi=False# define si el personaje cae hacia adelante o hacia atras
 
     pygame.mixer.music.load('music.mp3')
     pygame.mixer.music.set_endevent(pygame.constants.USEREVENT)
@@ -159,6 +186,30 @@ def bucle_juego():
         if direccionP1 == False and saltar== False:# si se presiona izquierda imprimira sprites ivertidos
             screen.blit(personaje1_inv,(ubicacionP1, ubicacionP1Y),(posicionIzq[i]))
 
+#SALTO MEJORADO VERTICAL Y CON MOVIMIENTO DEL PERSONAJE 1
+        if saltar==True:
+            if direccionP1==True:
+                screen.blit(personaje1, ( ubicacionP1, ubicacionP1Y),(posicionDer[6]))
+            if direccionP1==False:
+                screen.blit(personaje1_inv,(ubicacionP1, ubicacionP1Y),(posicionIzq[6]))
+            if caer==False:
+                ubicacionP1Y-=4
+            if caer==True:
+                ubicacionP1Y+=4
+            if ubicacionP1Y <= 186:
+                caer=True
+            if ubicacionP1Y >= 280:
+                caer=False
+                saltar=False
+
+        pygame.display.flip()#actualiza la pantalla
+
+        for eventos in pygame.event.get():# determina si el usuario dio presiona salir y cierra el juego
+            if eventos.type == QUIT:
+                pygame.quit()
+                sys.exit()
+
+    ''' SALTO ANTIGUO DEL PERSONAJE
 #SALTO VERTICAL DEL PERSONAJE 1
         if saltar==True: #comprueba si se presiono la tecla espacio
             if direccionP1 == True:#comprueba si se aplasto la tecla derecha para dibujar
@@ -208,18 +259,14 @@ def bucle_juego():
                 caerMovi= True
             if ubicacionP1Y == 280:
                 caerMovi = False
-                saltarMovi= False
-                    
-        
-        pygame.display.flip()#actualiza la pantalla
+                saltarMovi= False'''
+    
 
-        
-        for eventos in pygame.event.get():# determina si el usuario dio presiona salir y cierra el juego
-            if eventos.type == QUIT:
-                pygame.quit()
-                sys.exit()
+#bucle_juego()
 
-##bucle_juego()
+
+
+
 
 
 
