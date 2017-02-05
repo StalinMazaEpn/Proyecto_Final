@@ -35,6 +35,13 @@ class Plataforma(pygame.sprite.Sprite):
         self.image = pygame.image.load('imagenes/bloque.png').convert()  
         self.image = pygame.transform.scale(self.image,(50,50))        
         self.rect = self.image.get_rect()
+
+class Moneda(pygame.sprite.Sprite):
+    def __init__(self, largo, alto ):
+        super().__init__()        
+        self.image = pygame.image.load('imagenes/moneda.png').convert()  
+        self.image = pygame.transform.scale(self.image,(30,30))        
+        self.rect = self.image.get_rect()
         
 class Nivel(object):
     #Esta es una súper clase genérica usada para definir un nivel.        
@@ -348,4 +355,4 @@ def bucle_juego():
         reloj.tick(60)        
     pygame.quit()
 
-#bucle_juego()
+bucle_juego()
