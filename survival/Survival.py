@@ -50,6 +50,7 @@ class Nivel(object):
         self.listade_plataformas = pygame.sprite.Group()
         self.listade_enemigos = pygame.sprite.Group()
         self.protagonista = protagonista
+        self.listade_monedas = pygame.sprite.Group()
         # Imagen de fondo
         self.imagende_fondo = None 
     # Actualizamos todo en este nivel
@@ -57,11 +58,13 @@ class Nivel(object):
         #Actualizamos todo en este nivel."""
         self.listade_plataformas.update()
         self.listade_enemigos.update()
+        self.listade_monedas.update()
     #def devolver(self,a):
      #   return self.listade_plataformas
     def draw(self, pantalla):
         # Dibujamos todas las listas de sprites que tengamos
         self.listade_plataformas.draw(pantalla)
+        self.listade_enemigos.draw(pantalla)
         self.listade_enemigos.draw(pantalla)
 
 class Nivel_01(Nivel):
