@@ -40,7 +40,7 @@ class Moneda(pygame.sprite.Sprite):
     def __init__(self, largo, alto ):
         super().__init__()        
         self.image = pygame.image.load('imagenes/moneda.png').convert()  
-        self.image = pygame.transform.scale(self.image,(30,30))        
+        self.image = pygame.transform.scale(self.image,(40,40))        
         self.rect = self.image.get_rect()
         
 class Nivel(object):
@@ -80,7 +80,11 @@ class Nivel_01(Nivel):
                   [210, 70, 300, 500],
                   [210, 80, 375, 400]]
 
-        monedas = [ [210, 70, 450, 500]]
+        monedas = [ [210, 70, 505, 460],
+                    [210, 70, 205, 360],
+                    [210, 70, 605, 260],
+                    [210, 70, 305, 460],
+                    [210, 80, 380, 360]]
         
         # Iteramos sobre el array anterior y añadimos plataformas
         for plataforma in nivel:
