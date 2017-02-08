@@ -78,8 +78,10 @@ class Nivel_01(Nivel):
                   [210, 70, 200, 400],
                   [210, 70, 600, 300],
                   [210, 70, 300, 500],
-                  [210, 80, 375, 400]
-                  ]
+                  [210, 80, 375, 400]]
+
+        monedas = [ [210, 70, 450, 500]]
+        
         # Iteramos sobre el array anterior y añadimos plataformas
         for plataforma in nivel:
             bloque = Plataforma(plataforma[0], plataforma[1])
@@ -87,6 +89,14 @@ class Nivel_01(Nivel):
             bloque.rect.y = plataforma[3]
             bloque.protagonista = self.protagonista
             self.listade_plataformas.add(bloque)
+
+
+        for money in monedas:
+            moneda = Moneda(money[0], money[1])
+            moneda.rect.x = money[2]
+            moneda.rect.y = money[3]
+            moneda.protagonista = self.protagonista
+            self.listade_monedas.add(moneda)
 
 def imagen(filename, transparent=False):
         try: image = pygame.image.load(filename)
