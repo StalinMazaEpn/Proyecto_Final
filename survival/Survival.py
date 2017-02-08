@@ -65,7 +65,7 @@ class Nivel(object):
         # Dibujamos todas las listas de sprites que tengamos
         self.listade_plataformas.draw(pantalla)
         self.listade_enemigos.draw(pantalla)
-        self.listade_enemigos.draw(pantalla)
+        self.listade_monedas.draw(pantalla)
 
 class Nivel_01(Nivel):
     #Definición para el nivel 1
@@ -89,6 +89,7 @@ class Nivel_01(Nivel):
             bloque.rect.y = plataforma[3]
             bloque.protagonista = self.protagonista
             self.listade_plataformas.add(bloque)
+
 
 
         for money in monedas:
