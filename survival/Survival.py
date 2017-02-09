@@ -154,6 +154,7 @@ class Protagonista(pygame.sprite.Sprite):
         self.rect.x += self.cambio_x        
         # Comprobamos si hemos chocado contra algo
         lista_impactos_bloques = pygame.sprite.spritecollide(self, self.nivel.listade_plataformas, False)
+        lista_impactos_monedas = pygame.sprite.spritecollide(self, self.nivel.listade_monedas, True)
         for bloque in lista_impactos_bloques:
             # Si nos estamos desplazando hacia la derecha, hacemos que nuestro lado derecho sea el lado izquierdo del objeto que hemos tocado-
             if self.cambio_x > 0:
@@ -161,10 +162,12 @@ class Protagonista(pygame.sprite.Sprite):
             elif self.cambio_x < 0:
                 # En caso contrario, si nos desplazamos hacia la izquierda, hacemos lo opuesto.
                 self.rect.left = bloque.rect.right
+                
         # Desplazar arriba/abajo
         self.rect.y += self.cambio_y        
         # Comprobamos si hemos chocado contra algo
-        lista_impactos_bloques = pygame.sprite.spritecollide(self, self.nivel.listade_plataformas, False) 
+        lista_impactos_bloques = pygame.sprite.spritecollide(self, self.nivel.listade_plataformas, False)
+        
         for bloque in lista_impactos_bloques:
             # Restablecemos nuestra posición basándonos en la parte superior/inferior del objeto.
             if self.cambio_y > 0:
