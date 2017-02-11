@@ -369,6 +369,11 @@ def tota():
 def bucle_juego(nombrePersonaje):
     print('El usuario selecciono:',nombrePersonaje)#aqui te mando el personaje seleccionado
 
+    if nombrePersonaje == "Mario":
+        protagonista = Protagonista("imagenes/mario1.png")
+    if nombrePersonaje == "Seiya":
+        protagonista = Protagonista("imagenes/p1.png")
+        
     salir = False
     global color   
     pygame.init()# inicializa pygame 
@@ -403,7 +408,7 @@ def bucle_juego(nombrePersonaje):
     pygame.mixer.music.play()
     #-----------------------------------
      # Creamos al protagonista
-    protagonista = Protagonista("imagenes/p1.png")
+
     # Creamos todos los niveles
     listade_niveles = []
     listade_niveles.append(Nivel_01(protagonista,'imagenes/fondo1.jpg'))

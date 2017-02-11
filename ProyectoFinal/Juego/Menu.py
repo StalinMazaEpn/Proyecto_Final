@@ -150,7 +150,7 @@ def main():
                     nomPersonaje = "Mario"
                     personajeSelec = True
                 elif cursor1.colliderect(boton6.rect):
-                    nomPersonaje = "Personaje1"
+                    nomPersonaje = "Seiya"
                     personajeSelec = True
                     
             if evento.type == pygame.QUIT:
