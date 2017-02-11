@@ -12,12 +12,13 @@ rosa = (250,100,250)
 negro = (0,0,0)
 verde =(14,102,85) #14, 102, 85   (20,130,20)
 cafe = (150,100,50)
+blanco = (247, 249, 249)  
 reloj = pygame.time.Clock()
 #---------------------------------------------------------------------
 LARGO_PANTALLA = 900
 ALTO_PANTALLA = 600
 cont=0
-color = rojo
+color = blanco
 total=0
 #--------------------------------------CLASES----------------------------------------------------
 
@@ -381,7 +382,7 @@ def bucle_juego():
     disparoActivo = False
     disparoActivo2 = False
     #-----------------------CONTADOR----------------------------------------------
-    fuente1= pygame.font.SysFont("Arial", 25, True, False)
+    fuente1= pygame.font.SysFont("Arial", 30, True, False)
     info0=fuente1.render("Game is running..",0,(255,255,255))
     relojC= pygame.time.Clock()
     segundosint=0 
@@ -412,7 +413,7 @@ def bucle_juego():
     protagonista.rect.x = 340
     protagonista.rect.y = ALTO_PANTALLA - protagonista.rect.height
     lista_sprites_activos.add(protagonista)
-    bloques_activos = protagonista.devolver() 
+    bloques_activos = protagonista.devolver()    
     #Iteramos hasta que el usuario pulse sobre el botón de salida 
     hecho = False
     # Lo usamos para gestionar cuan rápido se actualiza la pantalla.
@@ -463,7 +464,8 @@ def bucle_juego():
                 print("Jugador por la Nave 2 Murio")
                 salir = True           
             if  pygame.sprite.spritecollideany(disparo2, bloques_activos, collided = None):                
-                disparoActivo2 = False        
+                disparoActivo2 = False
+        bloques_activos = protagonista.devolver()
         #------------------CONTADOR--------------------------------------
         segundosint= pygame.time.get_ticks()/1000        
         segundos = int(segundosint)
@@ -537,9 +539,9 @@ def bucle_juego():
             disparo2.update(screen)
         nave1.update(screen)
         nave2.update(screen)
-        screen.blit(minutero,(820,560))
-        screen.blit(separacion,(840,560))
-        screen.blit(segundero,(860,560))
+        screen.blit(minutero,(10,70))
+        screen.blit(separacion,(30,70))
+        screen.blit(segundero,(50,70))
         pygame.display.flip()#actualiza la pantalla
         reloj.tick(60)        
     pygame.quit()
