@@ -32,7 +32,7 @@ class Plataforma(pygame.sprite.Sprite):
 class Moneda(pygame.sprite.Sprite):
     def __init__(self, largo, alto ):
         super().__init__()        
-        self.image = pygame.image.load('imagenes/moneda.png').convert()  
+        self.image = pygame.image.load('imagenes/moneda1.png').convert()  
         self.image = pygame.transform.scale(self.image,(40,40))        
         self.rect = self.image.get_rect()
         
@@ -402,10 +402,6 @@ def bucle_juego():
                 disparoActivo = False
             if  pygame.sprite.spritecollideany(disparo1, bloques_activos, collided = None):                
                 disparoActivo = False
-        #------------------------mostrando disparo------------------
-        if disparoActivo:
-            disparo1.update(screen)        
-        nave1.update(screen)
         #------------------CONTADOR--------------------------------------
         segundosint= pygame.time.get_ticks()/1000        
         normal = int(segundosint)        
@@ -458,6 +454,10 @@ def bucle_juego():
         # TODO EL CÓDIGO DE DIBUJO DEBERÍA IR DEBAJO DE ESTE COMENTARIO 
         nivel_actual.draw(screen)
         lista_sprites_activos.draw(screen)
+        #------------------------mostrando disparo------------------
+        if disparoActivo:
+            disparo1.update(screen) 
+        nave1.update(screen)
         pygame.display.flip()#actualiza la pantalla
         reloj.tick(60)        
     pygame.quit()
