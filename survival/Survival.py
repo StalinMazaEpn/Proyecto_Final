@@ -25,14 +25,14 @@ class Plataforma(pygame.sprite.Sprite):
         #Constructor de plataforma. Asume su construcción cuando el usuario le haya pasado 
         #un array de 5 números, tal como se ha definido al principio de este código.
         super().__init__()        
-        self.image = pygame.image.load('imagenes/bloque.png').convert()  
+        self.image = pygame.image.load('imagenes/bloque.png') 
         self.image = pygame.transform.scale(self.image,(50,50))        
         self.rect = self.image.get_rect()
 
 class Moneda(pygame.sprite.Sprite):
     def __init__(self, largo, alto ):
         super().__init__()        
-        self.image = pygame.image.load('imagenes/moneda1.png').convert()  
+        self.image = pygame.image.load('imagenes/moneda1.png')  
         self.image = pygame.transform.scale(self.image,(40,40))        
         self.rect = self.image.get_rect()
         
