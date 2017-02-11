@@ -17,7 +17,7 @@ reloj = pygame.time.Clock()
 LARGO_PANTALLA = 900
 ALTO_PANTALLA = 600
 cont=0
-cambioN = False
+color = rojo
 #--------------------------------------CLASES----------------------------------------------------
 
 class Plataforma(pygame.sprite.Sprite):
@@ -329,7 +329,7 @@ def colision(player,rec):
 
 def bucle_juego():
     salir = False
-    global cambioN    
+    global color   
     pygame.init()# inicializa pygame 
     screen = pygame.display.set_mode((LARGO_PANTALLA, ALTO_PANTALLA))
     #ancho y alto de pantalla
@@ -410,7 +410,7 @@ def bucle_juego():
             if  colision(disparo1,protagonista.rect):                
                 disparoActivo = False
                 print("Jugador por la Nave 1 Murio")
-                salir = True           
+                #salir = True           
             if  pygame.sprite.spritecollideany(disparo1, bloques_activos, collided = None):                
                 disparoActivo = False            
         if disparoActivo2:                    
@@ -422,15 +422,17 @@ def bucle_juego():
             if  colision(disparo2,protagonista.rect):                
                 disparoActivo2 = False
                 print("Jugador por la Nave 2 Murio")
-                salir = True           
+                #salir = True           
             if  pygame.sprite.spritecollideany(disparo2, bloques_activos, collided = None):                
                 disparoActivo2 = False        
         #------------------CONTADOR--------------------------------------
         segundosint= pygame.time.get_ticks()/1000        
-        normal = int(segundosint)        
-        segundos= str(normal)
-        contador=fuente1.render(segundos,0,(155,155,255))
-        screen.blit(contador,(860,540))
+        segundos = int(segundosint)
+        minutos = int(segundos/60)
+        segundosR = segundos-(60*minutos)
+        minutero=fuente1.render(str(minutos),0,color)
+        separacion=fuente1.render(":",0,color) 
+        segundero=fuente1.render(str(segundosR),0,color)        
         #-------------------------------------------------------             
         #-------------------------------------------------------
         for eventos in pygame.event.get():# determina si el usuario dio presiona salir y cierra el juego
@@ -510,16 +512,12 @@ def bucle_juego():
         #------------------------mostrando disparo------------------
         if disparoActivo:
             disparo1.update(screen)
-            disparo2.update(screen) 
-        #nave1.update(screen)
-        #nave2.update(screen)
-        #if cambioN == True:            
-         #   nivel2(disparoActivo)
-          #  if disparoActivo:
-           #     disparo2.update(screen)                
-            #nave2.update(screen)
+            disparo2.update(screen)
         nave1.update(screen)
         nave2.update(screen)
+        screen.blit(minutero,(820,560))
+        screen.blit(separacion,(840,560))
+        screen.blit(segundero,(860,560))
         pygame.display.flip()#actualiza la pantalla
         reloj.tick(60)        
     pygame.quit()
