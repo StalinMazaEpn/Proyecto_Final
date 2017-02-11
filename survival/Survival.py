@@ -162,16 +162,29 @@ class Nivel_03(Nivel):
         # llamamos al constructor padre
         Nivel.__init__(self, protagonista,imagen)        
         # Array con la información sobre el largo, alto, x, e y
-        nivel = [ [210, 70, 500, 500],
-                  [210, 70, 200, 400],
-                  [210, 70, 400, 400]]
+        nivel = [ [210, 70, 425, 500],
+                  [210, 70, 425, 375],
+                  [210, 70, 425, 218],
+                  [210, 70, 750, 325],
+                  [210, 70, 800, 325],
+                  [210, 70, 750, 275],
+                  [210, 70, 700, 325],
+                  [210, 70, 50, 325],
+                  [210, 70, 100, 325],
+                  [210, 70, 150, 325],
+                  [210, 70, 100, 275]
+                  ]
 
 
-        monedas = [ [210, 70, 505, 460],
-                    [210, 70, 205, 360],
-                    [210, 70, 605, 260],
-                    [210, 70, 305, 460],
-                    [210, 80, 380, 360]]
+        monedas =[[210, 70, 425, 325],
+                  [210, 70, 425, 175],
+                  [210, 70, 850, 325],
+                  [210, 70, 0, 325],
+                  [210, 70, 100, 225],
+                  [210, 70, 750, 225],
+                  [210, 70, 125, 25],
+                  [210, 70, 700, 25],
+                  ]
         
         # Iteramos sobre el array anterior y añadimos plataformas
         for plataforma in nivel:
@@ -491,13 +504,7 @@ def bucle_juego():
         # Si el protagonista se aproxima al lado izquierdo, desplazamos su mundo a la derecha (+x)
         if protagonista.rect.left < 0:
             protagonista.rect.left = 0
-         #----PUNTOS EXTRAS-----#
-        if cont ==90:
-            cont =100
-        if cont ==190:
-            cont =200
-        if cont ==290:
-            cont =300
+         
         
         #######--------CAMBIAMOS DE NIVEL DE ACUERDO AL NUMERO DE MONEDAS--#####
 
@@ -507,12 +514,20 @@ def bucle_juego():
                 cambioN = True
             nivel_actual = listade_niveles[nivel_actual_no]
             protagonista.nivel = nivel_actual            
-        if cont>=200:
+        if cont>=244:
             nivel_actual_no = 2
             if nivel_actual_no == 2:
                 cambioN = True
             nivel_actual = listade_niveles[nivel_actual_no]
             protagonista.nivel = nivel_actual
+
+        #----PUNTOS EXTRAS-----#
+        if cont ==90:
+            cont =100
+        if cont ==244:
+            cont =300
+        if cont ==390:
+            cont =500
         # TODO EL CÓDIGO DE DIBUJO DEBERÍA IR DEBAJO DE ESTE COMENTARIO 
         nivel_actual.draw(screen)
         lista_sprites_activos.draw(screen)
