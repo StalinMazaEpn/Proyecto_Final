@@ -17,6 +17,7 @@ reloj = pygame.time.Clock()
 LARGO_PANTALLA = 900
 ALTO_PANTALLA = 600
 cont=0
+cambioN = False
 #--------------------------------------CLASES----------------------------------------------------
 
 class Plataforma(pygame.sprite.Sprite):
@@ -328,16 +329,21 @@ def colision(player,rec):
 
 def bucle_juego():
     salir = False
+    global cambioN    
     pygame.init()# inicializa pygame 
     screen = pygame.display.set_mode((LARGO_PANTALLA, ALTO_PANTALLA))
     #ancho y alto de pantalla
     pygame.display.set_caption("SURVIVAL")#titulo  a la ventana 
-    #-----------------------NAVE Y DISPARO---------------------------------------   
-    imgN=pygame.image.load("imagenes/nave.png").convert_alpha()
+    #-----------------------NAVE Y DISPARO---------------------------------------
+    #NAVE--------1---------
+    imgN=pygame.image.load("imagenes/naveE.png").convert_alpha()
     nave1=Nave(imgN)
-    disparoActivo = False
+    nave2=Nave(imgN)    
     imgD=pygame.image.load("imagenes/disparo.png").convert_alpha()
     disparo1=Disparo(imgD)
+    disparo2 = Disparo(imgD)
+    disparoActivo = False
+    disparoActivo2 = False
     #-----------------------CONTADOR----------------------------------------------
     fuente1= pygame.font.SysFont("Arial", 25, True, False)
     info0=fuente1.render("Game is running..",0,(255,255,255))
@@ -346,8 +352,7 @@ def bucle_juego():
     #-----------------------personaje----------------------------
     #------------------------------------------
     clock = pygame.time.Clock()# tiempo en de los fotogramas
-    caer= False # define si el personaje cae solo verticalmente
-    
+    caer= False # define si el personaje cae solo verticalmente    
     global saltarMovi
     caer= False # define si el personaje cae solo verticalmente
     caerMovi=False# define si el personaje cae hacia adelante o hacia atras
@@ -382,35 +387,50 @@ def bucle_juego():
         time= clock.tick(80)
         #Agranda o Achica la imagen segun las dimensiones que se de                            
         #-----------MOVER NAVE Y DISPARO------------------
-        if   not disparoActivo:        
+        if not disparoActivo:        
             disparoActivo = True                      
             disparo1.rect.left = nave1.rect.left + 18
             disparo1.rect.bottom = nave1.rect.bottom - 10
-
-        nave1.rect.left += 3   
+        if not disparoActivo2:
+            disparoActivo2 = True
+            disparo2.rect.left = nave2.rect.left + 18
+            disparo2.rect.bottom = nave2.rect.bottom - 10
+        nave1.rect.left += 3
+        nave2.rect.left += 4 
         if  nave1.rect.right > LARGO_PANTALLA:
-            nave1.rect.left = 0        
-        
+            nave1.rect.left = 0
+        if  nave2.rect.right > LARGO_PANTALLA:
+            nave2.rect.left = 0       
         if disparoActivo:                    
-            disparo1.rect.bottom += 5       
-            b = disparo1.rect.bottom
-            c = disparo1.rect.bottom            
-            if b <= 0:  
+            disparo1.rect.bottom += 5 
+            if disparo1.rect.bottom <= 0 :  
                 disparoActivo = False                
-            if c >ALTO_PANTALLA:
+            if disparo1.rect.bottom >ALTO_PANTALLA :
                 disparoActivo = False
             if  colision(disparo1,protagonista.rect):                
                 disparoActivo = False
-                print("Jugador Murio")
-                salir = True
+                print("Jugador por la Nave 1 Murio")
+                salir = True           
             if  pygame.sprite.spritecollideany(disparo1, bloques_activos, collided = None):                
-                disparoActivo = False
+                disparoActivo = False            
+        if disparoActivo2:                    
+            disparo2.rect.bottom += 5
+            if disparo2.rect.bottom <= 0 :  
+                disparoActivo2 = False                
+            if disparo2.rect.bottom >ALTO_PANTALLA :
+                disparoActivo2 = False
+            if  colision(disparo2,protagonista.rect):                
+                disparoActivo2 = False
+                print("Jugador por la Nave 2 Murio")
+                salir = True           
+            if  pygame.sprite.spritecollideany(disparo2, bloques_activos, collided = None):                
+                disparoActivo2 = False        
         #------------------CONTADOR--------------------------------------
         segundosint= pygame.time.get_ticks()/1000        
         normal = int(segundosint)        
         segundos= str(normal)
         contador=fuente1.render(segundos,0,(155,155,255))
-        screen.blit(contador,(860,540))        
+        screen.blit(contador,(860,540))
         #-------------------------------------------------------             
         #-------------------------------------------------------
         for eventos in pygame.event.get():# determina si el usuario dio presiona salir y cierra el juego
@@ -442,19 +462,7 @@ def bucle_juego():
         # Si el protagonista se aproxima al lado izquierdo, desplazamos su mundo a la derecha (+x)
         if protagonista.rect.left < 0:
             protagonista.rect.left = 0
-
-        #######--------CAMBIAMOS DE NIVEL DE ACUERDO AL NUMERO DE MONEDAS--#####
-        global cont
-        if cont >=100:
-            nivel_actual_no = 1
-            nivel_actual = listade_niveles[nivel_actual_no]
-            protagonista.nivel = nivel_actual
-        if cont>=200:
-            nivel_actual_no = 2
-            nivel_actual = listade_niveles[nivel_actual_no]
-            protagonista.nivel = nivel_actual
-            
-                #----MANDANDO EL PUNTAJE A UN TXT-----###
+         #----MANDANDO EL PUNTAJE A UN TXT-----###
         if cont ==90:
             cont =100
             outfile = open('puntaje.txt', 'a') # Indicamos el valor 'w'.
@@ -481,14 +489,37 @@ def bucle_juego():
             infile = open('puntaje.txt', 'r')
             print(infile.read())
             infile.close()
-            
+        
+        #######--------CAMBIAMOS DE NIVEL DE ACUERDO AL NUMERO DE MONEDAS--#####
+        global cont
+        if cont >=100:
+            nivel_actual_no = 1
+            if nivel_actual_no == 1:
+                cambioN = True
+            nivel_actual = listade_niveles[nivel_actual_no]
+            protagonista.nivel = nivel_actual            
+        if cont>=200:
+            nivel_actual_no = 2
+            if nivel_actual_no == 2:
+                cambioN = True
+            nivel_actual = listade_niveles[nivel_actual_no]
+            protagonista.nivel = nivel_actual
         # TODO EL CÓDIGO DE DIBUJO DEBERÍA IR DEBAJO DE ESTE COMENTARIO 
         nivel_actual.draw(screen)
         lista_sprites_activos.draw(screen)
         #------------------------mostrando disparo------------------
         if disparoActivo:
-            disparo1.update(screen) 
+            disparo1.update(screen)
+            disparo2.update(screen) 
+        #nave1.update(screen)
+        #nave2.update(screen)
+        #if cambioN == True:            
+         #   nivel2(disparoActivo)
+          #  if disparoActivo:
+           #     disparo2.update(screen)                
+            #nave2.update(screen)
         nave1.update(screen)
+        nave2.update(screen)
         pygame.display.flip()#actualiza la pantalla
         reloj.tick(60)        
     pygame.quit()
