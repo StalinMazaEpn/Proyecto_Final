@@ -465,4 +465,4 @@ def bucle_juego():
         reloj.tick(60)        
     pygame.quit()
 
-bucle_juego()
+##bucle_juego()
