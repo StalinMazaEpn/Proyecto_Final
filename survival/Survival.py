@@ -12,12 +12,13 @@ rosa = (250,100,250)
 negro = (0,0,0)
 verde =(14,102,85) #14, 102, 85   (20,130,20)
 cafe = (150,100,50)
+blanco = (247, 249, 249)  
 reloj = pygame.time.Clock()
 #---------------------------------------------------------------------
 LARGO_PANTALLA = 900
 ALTO_PANTALLA = 600
 cont=0
-color = rojo
+color = blanco
 total=0
 #--------------------------------------CLASES----------------------------------------------------
 
@@ -162,16 +163,29 @@ class Nivel_03(Nivel):
         # llamamos al constructor padre
         Nivel.__init__(self, protagonista,imagen)        
         # Array con la información sobre el largo, alto, x, e y
-        nivel = [ [210, 70, 500, 500],
-                  [210, 70, 200, 400],
-                  [210, 70, 400, 400]]
+        nivel = [ [210, 70, 425, 500],
+                  [210, 70, 425, 375],
+                  [210, 70, 425, 218],
+                  [210, 70, 750, 325],
+                  [210, 70, 800, 325],
+                  [210, 70, 750, 275],
+                  [210, 70, 700, 325],
+                  [210, 70, 50, 325],
+                  [210, 70, 100, 325],
+                  [210, 70, 150, 325],
+                  [210, 70, 100, 275]
+                  ]
 
 
-        monedas = [ [210, 70, 505, 460],
-                    [210, 70, 205, 360],
-                    [210, 70, 605, 260],
-                    [210, 70, 305, 460],
-                    [210, 80, 380, 360]]
+        monedas =[[210, 70, 425, 325],
+                  [210, 70, 425, 175],
+                  [210, 70, 850, 325],
+                  [210, 70, 0, 325],
+                  [210, 70, 100, 225],
+                  [210, 70, 750, 225],
+                  [210, 70, 125, 25],
+                  [210, 70, 700, 25],
+                  ]
         
         # Iteramos sobre el array anterior y añadimos plataformas
         for plataforma in nivel:
@@ -368,7 +382,7 @@ def bucle_juego():
     disparoActivo = False
     disparoActivo2 = False
     #-----------------------CONTADOR----------------------------------------------
-    fuente1= pygame.font.SysFont("Arial", 25, True, False)
+    fuente1= pygame.font.SysFont("Arial", 30, True, False)
     info0=fuente1.render("Game is running..",0,(255,255,255))
     relojC= pygame.time.Clock()
     segundosint=0 
@@ -399,7 +413,7 @@ def bucle_juego():
     protagonista.rect.x = 340
     protagonista.rect.y = ALTO_PANTALLA - protagonista.rect.height
     lista_sprites_activos.add(protagonista)
-    bloques_activos = protagonista.devolver() 
+    bloques_activos = protagonista.devolver()    
     #Iteramos hasta que el usuario pulse sobre el botón de salida 
     hecho = False
     # Lo usamos para gestionar cuan rápido se actualiza la pantalla.
@@ -450,7 +464,8 @@ def bucle_juego():
                 print("Jugador por la Nave 2 Murio")
                 salir = True           
             if  pygame.sprite.spritecollideany(disparo2, bloques_activos, collided = None):                
-                disparoActivo2 = False        
+                disparoActivo2 = False
+        bloques_activos = protagonista.devolver()
         #------------------CONTADOR--------------------------------------
         segundosint= pygame.time.get_ticks()/1000        
         segundos = int(segundosint)
@@ -491,13 +506,7 @@ def bucle_juego():
         # Si el protagonista se aproxima al lado izquierdo, desplazamos su mundo a la derecha (+x)
         if protagonista.rect.left < 0:
             protagonista.rect.left = 0
-         #----PUNTOS EXTRAS-----#
-        if cont ==90:
-            cont =100
-        if cont ==190:
-            cont =200
-        if cont ==290:
-            cont =300
+         
         
         #######--------CAMBIAMOS DE NIVEL DE ACUERDO AL NUMERO DE MONEDAS--#####
 
@@ -507,12 +516,20 @@ def bucle_juego():
                 cambioN = True
             nivel_actual = listade_niveles[nivel_actual_no]
             protagonista.nivel = nivel_actual            
-        if cont>=200:
+        if cont>=244:
             nivel_actual_no = 2
             if nivel_actual_no == 2:
                 cambioN = True
             nivel_actual = listade_niveles[nivel_actual_no]
             protagonista.nivel = nivel_actual
+
+        #----PUNTOS EXTRAS-----#
+        if cont ==90:
+            cont =100
+        if cont ==244:
+            cont =300
+        if cont ==390:
+            cont =500
         # TODO EL CÓDIGO DE DIBUJO DEBERÍA IR DEBAJO DE ESTE COMENTARIO 
         nivel_actual.draw(screen)
         lista_sprites_activos.draw(screen)
@@ -522,9 +539,9 @@ def bucle_juego():
             disparo2.update(screen)
         nave1.update(screen)
         nave2.update(screen)
-        screen.blit(minutero,(820,560))
-        screen.blit(separacion,(840,560))
-        screen.blit(segundero,(860,560))
+        screen.blit(minutero,(10,70))
+        screen.blit(separacion,(30,70))
+        screen.blit(segundero,(50,70))
         pygame.display.flip()#actualiza la pantalla
         reloj.tick(60)        
     pygame.quit()
