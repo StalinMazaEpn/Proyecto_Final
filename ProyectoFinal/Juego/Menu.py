@@ -39,10 +39,10 @@ def opciones(opcion,fuente,ventana):
             posx,posy = 450,450
     elif opcion ==2:
         mensaje = 'Personajes'
-        posx,posy =470,280
+        posx,posy =500,280
     elif opcion ==3:
         mensaje = 'Records'
-        posx,posy =470,280
+        posx,posy =535,280
         record(fuente,ventana)
     return mensaje,posx,posy
 
@@ -64,10 +64,10 @@ def record(fuente,ventana):
     texto  = ""
     ultimos5 = Puntajes[contador:len(Puntajes)]
     for i in range(len(ultimos5)):
-        texto1 = 'Record'+' '+str(contador+1)+'  '+str(ultimos5[i])
+        texto1 = 'Record'+' '+str(contador+1)+'      '+str(ultimos5[i])
         texto2 = fuente.render(texto1,1,blanco)
         contador += 1
-        ventana.blit(texto2,(500,50*i+350))
+        ventana.blit(texto2,(450,50*i+350))
     contador = 0
     
 def lecturaP(texto):
