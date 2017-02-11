@@ -32,7 +32,7 @@ class Plataforma(pygame.sprite.Sprite):
 class Moneda(pygame.sprite.Sprite):
     def __init__(self, largo, alto ):
         super().__init__()        
-        self.image = pygame.image.load('imagenes/moneda1.png')  
+        self.image = pygame.image.load('imagenes/moneda.png')  
         self.image = pygame.transform.scale(self.image,(40,40))        
         self.rect = self.image.get_rect()
         
@@ -148,7 +148,7 @@ class Nivel_03(Nivel):
         # Array con la información sobre el largo, alto, x, e y
         nivel = [ [210, 70, 500, 500],
                   [210, 70, 200, 400],
-                  [210, 70, 600, 300]]
+                  [210, 70, 400, 400]]
 
 
         monedas = [ [210, 70, 505, 460],
@@ -236,7 +236,7 @@ class Protagonista(pygame.sprite.Sprite):
                 self.rect.left = bloque.rect.right
 #---------------- comprobamos si hemos cogidos monedas------ y sumamos puntos
         for money in lista_impactos_monedas:
-            cont+=1 *20
+            cont+=2 *9
             print(cont)
             
         # Desplazar arriba/abajo
@@ -450,7 +450,35 @@ def bucle_juego():
             nivel_actual_no = 2
             nivel_actual = listade_niveles[nivel_actual_no]
             protagonista.nivel = nivel_actual
-            
+
+        #----MANDANDO EL PUNTAJE A UN TXT-----###
+        if cont ==90:
+            cont =100
+            outfile = open('puntaje.txt', 'a') # Indicamos el valor 'w'.
+            outfile.write(str(cont)+'\n')
+            outfile.close()
+            infile = open('puntaje.txt', 'r')
+            print(infile.read())
+            infile.close()
+
+        if cont ==190:
+            cont =200
+            outfile = open('puntaje.txt', 'a') # Indicamos el valor 'w'.
+            outfile.write(str(cont)+'\n')
+            outfile.close()
+            infile = open('puntaje.txt', 'r')
+            print(infile.read())
+            infile.close()
+
+        if cont ==290:
+            cont =300
+            outfile = open('puntaje.txt', 'a') # Indicamos el valor 'w'.
+            outfile.write(str(cont)+'\n')
+            outfile.close()
+            infile = open('puntaje.txt', 'r')
+            print(infile.read())
+            infile.close()
+        
         # TODO EL CÓDIGO DE DIBUJO DEBERÍA IR DEBAJO DE ESTE COMENTARIO 
         nivel_actual.draw(screen)
         lista_sprites_activos.draw(screen)
