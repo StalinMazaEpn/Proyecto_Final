@@ -18,6 +18,7 @@ LARGO_PANTALLA = 900
 ALTO_PANTALLA = 600
 cont=0
 color = rojo
+total=0
 #--------------------------------------CLASES----------------------------------------------------
 
 class Plataforma(pygame.sprite.Sprite):
@@ -73,15 +74,13 @@ class Nivel_01(Nivel):
         # Array con la información sobre el largo, alto, x, e y
         nivel = [ [210, 70, 850, 500],
                   [210, 70, 800, 500],
-                  [210, 70, 750, 500],
-                  [210, 70, 750, 300],
-                  [210, 70, 475, 400],
-                  [210, 70, 150, 500],
+                  [210, 70, 0, 500],
+                  [210, 70, 50, 500],
                   [210, 80, 425, 400],
-                  [210, 80, 375, 400],
-                  [210, 70, 10, 300],
-                  [210, 70, 150, 200],
-                  [210, 70, 200, 300]]
+                  [210, 70, 475, 400],
+                  [210, 70, 750, 300],
+                  [210, 70, 150, 300]]
+                  
 
         monedas = [ [210, 70, 850, 460],
                   [210, 70, 750, 260],
@@ -112,17 +111,33 @@ class Nivel_02(Nivel):
         # llamamos al constructor padre
         Nivel.__init__(self, protagonista,imagen)        
         # Array con la información sobre el largo, alto, x, e y
-        nivel = [ [210, 70, 500, 500],
-                  [210, 70, 200, 400],
-                  [210, 70, 600, 300]]
+        nivel = [ [210, 70, 0,  550],
+                  [210, 70, 50, 550],
+                  [210, 70, 0,  500],
+                  [210, 70, 850, 550],
+                  [210, 70, 850, 500],
+                  [210, 70, 800, 550],
+                  [210, 70, 425, 300],
+                  [210, 70, 475, 350],
+                  [210, 70, 525, 400],
+                  [210, 70, 375, 350],
+                  [210, 70, 325, 400],
+                  [210, 70, 0, 300],
+                  [210, 70, 850, 300],
+                  [210, 70, 600, 200],
+                  [210, 70, 250, 200]
+                  ]
 
 
-        monedas = [ [210, 70, 505, 460],
-                    [210, 70, 205, 360],
-                    [210, 70, 500, 260],
-                    [210, 70, 305, 460],
-                    [210, 80, 380, 360]]
-        
+        monedas = [[210, 70, 0,  450],
+                  [210, 70, 850, 450],
+                  [210, 70, 0, 250],
+                  [210, 70, 850, 250],
+                  [210, 70, 600, 150],
+                  [210, 70, 250, 150],
+                   [210, 70, 425, 250],
+                   [210, 70, 425, 0]
+                  ]
         # Iteramos sobre el array anterior y añadimos plataformas
         for plataforma in nivel:
             bloque = Plataforma(plataforma[0], plataforma[1])
@@ -326,7 +341,15 @@ def colision(player,rec):
         return True
     else:
         return False
-
+    
+#----FUNCION PARA GUARDAR EL ULTIMO PUNTAJE---#
+def tota():
+    global cont,total
+    total+=cont
+    archi=open('totales.txt','w')
+    archi.write(str(total)+'\n')
+    archi.close()
+    
 def bucle_juego():
     salir = False
     global color   
@@ -384,6 +407,7 @@ def bucle_juego():
     #------------------------------
     #BUCLE PRINCIPAL DEL JUEGO
     while salir != True:
+        global cont
         time= clock.tick(80)
         #Agranda o Achica la imagen segun las dimensiones que se de                            
         #-----------MOVER NAVE Y DISPARO------------------
@@ -409,8 +433,9 @@ def bucle_juego():
                 disparoActivo = False
             if  colision(disparo1,protagonista.rect):                
                 disparoActivo = False
+                tota()
                 print("Jugador por la Nave 1 Murio")
-                #salir = True           
+                salir = True           
             if  pygame.sprite.spritecollideany(disparo1, bloques_activos, collided = None):                
                 disparoActivo = False            
         if disparoActivo2:                    
@@ -421,8 +446,9 @@ def bucle_juego():
                 disparoActivo2 = False
             if  colision(disparo2,protagonista.rect):                
                 disparoActivo2 = False
+                tota()
                 print("Jugador por la Nave 2 Murio")
-                #salir = True           
+                salir = True           
             if  pygame.sprite.spritecollideany(disparo2, bloques_activos, collided = None):                
                 disparoActivo2 = False        
         #------------------CONTADOR--------------------------------------
@@ -437,6 +463,7 @@ def bucle_juego():
         #-------------------------------------------------------
         for eventos in pygame.event.get():# determina si el usuario dio presiona salir y cierra el juego
             if eventos.type == QUIT:
+                tota()
                 salir = True
                 pygame.quit()#detenemos todos los modulos
                 sys.exit()
@@ -464,36 +491,16 @@ def bucle_juego():
         # Si el protagonista se aproxima al lado izquierdo, desplazamos su mundo a la derecha (+x)
         if protagonista.rect.left < 0:
             protagonista.rect.left = 0
-         #----MANDANDO EL PUNTAJE A UN TXT-----###
+         #----PUNTOS EXTRAS-----#
         if cont ==90:
             cont =100
-            outfile = open('puntaje.txt', 'a') # Indicamos el valor 'w'.
-            outfile.write(str(cont)+'\n')
-            outfile.close()
-            infile = open('puntaje.txt', 'r')
-            print(infile.read())
-            infile.close()
-
         if cont ==190:
             cont =200
-            outfile = open('puntaje.txt', 'a') # Indicamos el valor 'w'.
-            outfile.write(str(cont)+'\n')
-            outfile.close()
-            infile = open('puntaje.txt', 'r')
-            print(infile.read())
-            infile.close()
-
         if cont ==290:
             cont =300
-            outfile = open('puntaje.txt', 'a') # Indicamos el valor 'w'.
-            outfile.write(str(cont)+'\n')
-            outfile.close()
-            infile = open('puntaje.txt', 'r')
-            print(infile.read())
-            infile.close()
         
         #######--------CAMBIAMOS DE NIVEL DE ACUERDO AL NUMERO DE MONEDAS--#####
-        global cont
+
         if cont >=100:
             nivel_actual_no = 1
             if nivel_actual_no == 1:
