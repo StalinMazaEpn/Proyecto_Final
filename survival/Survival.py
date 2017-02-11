@@ -16,15 +16,8 @@ reloj = pygame.time.Clock()
 #---------------------------------------------------------------------
 LARGO_PANTALLA = 900
 ALTO_PANTALLA = 600
+cont=0
 #--------------------------------------CLASES----------------------------------------------------
-class Nivel(object):
-    #Esta es una súper clase genérica usada para definir un nivel.
-    #Crea una clase hija específica para cada nivel con una info específica.        
-    def __init__(self, protagonista):
-        #Constructor. Requerido para cuando las plataformas móviles colisionan con el protagonista
-        self.listade_plataformas = pygame.sprite.Group()
-        self.listade_enemigos = pygame.sprite.Group()
-        self.protagonista = protagonista
 
 class Plataforma(pygame.sprite.Sprite):
     #Plataforma sobre la que el usuario puede saltar
@@ -45,17 +38,18 @@ class Moneda(pygame.sprite.Sprite):
         
 class Nivel(object):
     #Esta es una súper clase genérica usada para definir un nivel.        
-    def __init__(self, protagonista):
+    def __init__(self, protagonista,imagen):
         #Constructor. Requerido para cuando las plataformas móviles colisionan con el protagonista.
         self.listade_plataformas = pygame.sprite.Group()
         self.listade_enemigos = pygame.sprite.Group()
         self.protagonista = protagonista
         self.listade_monedas = pygame.sprite.Group()
         # Imagen de fondo
-        self.imagende_fondo = None 
+        self.imagende_fondo =  pygame.image.load(imagen).convert()
     # Actualizamos todo en este nivel
     def update(self):
         #Actualizamos todo en este nivel."""
+        
         self.listade_plataformas.update()
         self.listade_enemigos.update()
         self.listade_monedas.update()
@@ -63,22 +57,99 @@ class Nivel(object):
      #   return self.listade_plataformas
     def draw(self, pantalla):
         # Dibujamos todas las listas de sprites que tengamos
+        pantalla.blit(self.imagende_fondo,(0,0))
+        self.imagende_fondo= pygame.transform.scale(self.imagende_fondo,(LARGO_PANTALLA,ALTO_PANTALLA))
         self.listade_plataformas.draw(pantalla)
         self.listade_enemigos.draw(pantalla)
         self.listade_monedas.draw(pantalla)
 
 class Nivel_01(Nivel):
     #Definición para el nivel 1
-    def __init__(self, protagonista):
+    def __init__(self, protagonista,imagen):
         #Creamos el nivel 1        
         # llamamos al constructor padre
-        Nivel.__init__(self, protagonista)        
+        Nivel.__init__(self, protagonista,imagen)        
+        # Array con la información sobre el largo, alto, x, e y
+        nivel = [ [210, 70, 850, 500],
+                  [210, 70, 800, 500],
+                  [210, 70, 750, 500],
+                  [210, 70, 750, 300],
+                  [210, 70, 475, 400],
+                  [210, 70, 150, 500],
+                  [210, 80, 425, 400],
+                  [210, 80, 375, 400],
+                  [210, 70, 10, 300],
+                  [210, 70, 150, 200],
+                  [210, 70, 200, 300]]
+
+        monedas = [ [210, 70, 850, 460],
+                  [210, 70, 750, 260],
+                  [210, 70, 150, 460],
+                  [210, 80, 425, 360],
+                  [210, 70, 10, 260]]
+        
+        # Iteramos sobre el array anterior y añadimos plataformas
+        for plataforma in nivel:
+            bloque = Plataforma(plataforma[0], plataforma[1])
+            bloque.rect.x = plataforma[2]
+            bloque.rect.y = plataforma[3]
+            bloque.protagonista = self.protagonista
+            self.listade_plataformas.add(bloque)
+
+
+
+        for money in monedas:
+            moneda = Moneda(money[0], money[1])
+            moneda.rect.x = money[2]
+            moneda.rect.y = money[3]
+            moneda.protagonista = self.protagonista
+            self.listade_monedas.add(moneda)
+class Nivel_02(Nivel):
+    #Definición para el nivel 1
+    def __init__(self, protagonista,imagen):
+        #Creamos el nivel 1        
+        # llamamos al constructor padre
+        Nivel.__init__(self, protagonista,imagen)        
         # Array con la información sobre el largo, alto, x, e y
         nivel = [ [210, 70, 500, 500],
                   [210, 70, 200, 400],
-                  [210, 70, 600, 300],
-                  [210, 70, 300, 500],
-                  [210, 80, 375, 400]]
+                  [210, 70, 600, 300]]
+
+
+        monedas = [ [210, 70, 505, 460],
+                    [210, 70, 205, 360],
+                    [210, 70, 500, 260],
+                    [210, 70, 305, 460],
+                    [210, 80, 380, 360]]
+        
+        # Iteramos sobre el array anterior y añadimos plataformas
+        for plataforma in nivel:
+            bloque = Plataforma(plataforma[0], plataforma[1])
+            bloque.rect.x = plataforma[2]
+            bloque.rect.y = plataforma[3]
+            bloque.protagonista = self.protagonista
+            self.listade_plataformas.add(bloque)
+
+
+
+        for money in monedas:
+            moneda = Moneda(money[0], money[1])
+            moneda.rect.x = money[2]
+            moneda.rect.y = money[3]
+            moneda.protagonista = self.protagonista
+            self.listade_monedas.add(moneda)
+
+class Nivel_03(Nivel):
+    #Definición para el nivel 1
+    def __init__(self, protagonista,imagen):
+        #Creamos el nivel 1        
+        # llamamos al constructor padre
+        Nivel.__init__(self, protagonista,imagen)        
+        # Array con la información sobre el largo, alto, x, e y
+        nivel = [ [210, 70, 500, 500],
+                  [210, 70, 200, 400],
+                  [210, 70, 600, 300]]
+
 
         monedas = [ [210, 70, 505, 460],
                     [210, 70, 205, 360],
@@ -102,7 +173,7 @@ class Nivel_01(Nivel):
             moneda.rect.y = money[3]
             moneda.protagonista = self.protagonista
             self.listade_monedas.add(moneda)
-
+            
 def imagen(filename, transparent=False):
         try: image = pygame.image.load(filename)
         except pygame.error.message:
@@ -146,7 +217,8 @@ class Protagonista(pygame.sprite.Sprite):
         # Establecemos una referencia hacia la imagen rectangular
         self.rect = self.image.get_rect() 
       
-    def update(self): 
+    def update(self):
+        global cont
         #Desplazamos al protagonista
         # Gravedad
         self.calc_grav()        
@@ -162,7 +234,11 @@ class Protagonista(pygame.sprite.Sprite):
             elif self.cambio_x < 0:
                 # En caso contrario, si nos desplazamos hacia la izquierda, hacemos lo opuesto.
                 self.rect.left = bloque.rect.right
-                
+#---------------- comprobamos si hemos cogidos monedas------ y sumamos puntos
+        for money in lista_impactos_monedas:
+            cont+=1 *20
+            print(cont)
+            
         # Desplazar arriba/abajo
         self.rect.y += self.cambio_y        
         # Comprobamos si hemos chocado contra algo
@@ -254,8 +330,7 @@ def bucle_juego():
     pygame.init()# inicializa pygame 
     screen = pygame.display.set_mode((LARGO_PANTALLA, ALTO_PANTALLA))
     #ancho y alto de pantalla
-    pygame.display.set_caption("SURVIVAL")#titulo  a la ventana
-    fondo= pygame.image.load('imagenes/fondo1.jpg').convert() #fondo pantalla   
+    pygame.display.set_caption("SURVIVAL")#titulo  a la ventana 
     #-----------------------NAVE Y DISPARO---------------------------------------   
     imgN=pygame.image.load("imagenes/nave.png").convert_alpha()
     nave1=Nave(imgN)
@@ -268,7 +343,6 @@ def bucle_juego():
     relojC= pygame.time.Clock()
     segundosint=0 
     #-----------------------personaje----------------------------
-    objeto = Protagonista("imagenes/p1.png")
     #------------------------------------------
     clock = pygame.time.Clock()# tiempo en de los fotogramas
     caer= False # define si el personaje cae solo verticalmente
@@ -285,7 +359,9 @@ def bucle_juego():
     protagonista = Protagonista("imagenes/p1.png")
     # Creamos todos los niveles
     listade_niveles = []
-    listade_niveles.append(Nivel_01(protagonista))    
+    listade_niveles.append(Nivel_01(protagonista,'imagenes/fondo1.jpg'))
+    listade_niveles.append(Nivel_02(protagonista,'imagenes/fondo2.jpg'))
+    listade_niveles.append(Nivel_03(protagonista,'imagenes/fondo3.jpg'))   
     # Establecemos el nivel actual
     nivel_actual_no = 0
     nivel_actual = listade_niveles[nivel_actual_no]
@@ -302,9 +378,7 @@ def bucle_juego():
     #------------------------------
     #BUCLE PRINCIPAL DEL JUEGO
     while salir != True:
-        screen.blit(fondo,(0,0))#dibuja la imagen
         time= clock.tick(80)
-        fondo= pygame.transform.scale(fondo,(LARGO_PANTALLA,ALTO_PANTALLA))
         #Agranda o Achica la imagen segun las dimensiones que se de                            
         #-----------MOVER NAVE Y DISPARO------------------
         if   not disparoActivo:        
@@ -368,7 +442,19 @@ def bucle_juego():
             protagonista.rect.right = LARGO_PANTALLA    
         # Si el protagonista se aproxima al lado izquierdo, desplazamos su mundo a la derecha (+x)
         if protagonista.rect.left < 0:
-            protagonista.rect.left = 0            
+            protagonista.rect.left = 0
+
+        #######--------CAMBIAMOS DE NIVEL DE ACUERDO AL NUMERO DE MONEDAS--#####
+        global cont
+        if cont >=100:
+            nivel_actual_no = 1
+            nivel_actual = listade_niveles[nivel_actual_no]
+            protagonista.nivel = nivel_actual
+        if cont>=200:
+            nivel_actual_no = 2
+            nivel_actual = listade_niveles[nivel_actual_no]
+            protagonista.nivel = nivel_actual
+            
         # TODO EL CÓDIGO DE DIBUJO DEBERÍA IR DEBAJO DE ESTE COMENTARIO 
         nivel_actual.draw(screen)
         lista_sprites_activos.draw(screen)
