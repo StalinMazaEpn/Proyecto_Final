@@ -238,7 +238,7 @@ class Protagonista(pygame.sprite.Sprite):
 #---------------- comprobamos si hemos cogidos monedas------ y sumamos puntos
         for money in lista_impactos_monedas:
             cont+=2 *9
-            print(cont)
+##            print(cont)
             
         # Desplazar arriba/abajo
         self.rect.y += self.cambio_y        
