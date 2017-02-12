@@ -21,7 +21,102 @@ cont=0
 color = blanco
 total=0
 #--------------------------------------CLASES----------------------------------------------------
+class Protagonista(pygame.sprite.Sprite): 
+    #Esta clase representa la barra inferior que controla el protagonista  
+    # -- Atributos 
+    # Establecemos el vector velocidad del protagonista
+    cambio_x = 0
+    cambio_y = 0    
+    # Lista de todos los sprites contra los que podemos botar
+    nivel = None    
+    # -- Métodos
+    def __init__(self,imagen): 
+        #Función Constructor        
+        #  -- Llama al constructor padre 
+        super().__init__()        
+        # Crea una imagen del bloque y lo rellena con color rojo.
+        # También podríamos usar una imagen guardada en disco	
+        largo = 60
+        alto = 60
+        self.image = pygame.image.load(imagen).convert()
+        color= self.image.get_at((0,0))
+        self.image.set_colorkey(color,RLEACCEL)
+        # Establecemos una referencia hacia la imagen rectangular
+        self.rect = self.image.get_rect() 
+      
+    def update(self):
+        global cont
+        #Desplazamos al protagonista
+        # Gravedad
+        self.calc_grav()        
+        # Desplazar izquierda/derecha
+        self.rect.x += self.cambio_x        
+        # Comprobamos si hemos chocado contra algo
+        lista_impactos_bloques = pygame.sprite.spritecollide(self, self.nivel.listade_plataformas, False)
+        lista_impactos_monedas = pygame.sprite.spritecollide(self, self.nivel.listade_monedas, True)
+        for bloque in lista_impactos_bloques:
+            # Si nos estamos desplazando hacia la derecha, hacemos que nuestro lado derecho
+            #sea el lado izquierdo del objeto que hemos tocado-
+            if self.cambio_x > 0:
+                self.rect.right = bloque.rect.left
+            elif self.cambio_x < 0:
+                # En caso contrario, si nos desplazamos hacia la izquierda, hacemos lo opuesto.
+                self.rect.left = bloque.rect.right
+#---------------- comprobamos si hemos cogidos monedas------ y sumamos puntos
+        for money in lista_impactos_monedas:
+            cont+=2 *9
+##            print(cont)
+            
+        # Desplazar arriba/abajo
+        self.rect.y += self.cambio_y        
+        # Comprobamos si hemos chocado contra algo
+        lista_impactos_bloques = pygame.sprite.spritecollide(self, self.nivel.listade_plataformas, False)
+        
+        for bloque in lista_impactos_bloques:
+            # Restablecemos nuestra posición basándonos en la parte superior/inferior del objeto.
+            if self.cambio_y > 0:
+                self.rect.bottom = bloque.rect.top 
+            elif self.cambio_y < 0:
+                self.rect.top = bloque.rect.bottom
+            # Detenemos nuestro movimiento vertical
+            self.cambio_y = 0
+    def devolver(self):
+        return self.nivel.listade_plataformas
+    def calc_grav(self):
+        #Calculamos el efecto de la gravedad 
+        if self.cambio_y == 0:
+            self.cambio_y = 1
+        else:
+            self.cambio_y += .35
+        # Observamos si nos encontramos sobre el suelo. 
+        if self.rect.y >= ALTO_PANTALLA - self.rect.height and self.cambio_y >= 0:
+            self.cambio_y = 0
+            self.rect.y = ALTO_PANTALLA - self.rect.height
 
+    def saltar(self):
+        #Llamado cuando el usuario pulsa el botón de 'saltar'        
+        # Descendemos un poco y observamos si hay una plataforma debajo nuestro.
+        # Descendemos 2 píxels (con una plataforma que está  descendiendo, no funciona bien 
+	# si solo descendemos uno).
+        self.rect.y += 2
+        lista_impactos_plataforma = pygame.sprite.spritecollide(self, self.nivel.listade_plataformas, False)
+        self.rect.y -= 2        
+        # Si está listo para saltar, aumentamos nuestra velocidad hacia arriba
+        if len(lista_impactos_plataforma) > 0 or self.rect.bottom >= ALTO_PANTALLA:
+            self.cambio_y = -10
+            
+    # Movimiento controlado por el protagonista
+    def ir_izquierda(self):
+        #Es llamado cuando el usuario pulsa la flecha izquierda
+        self.cambio_x = -6
+
+    def ir_derecha(self):
+        #Es llamado cuando el usuario pulsa la flecha derecha
+        self.cambio_x = 6
+
+    def stop(self):
+        #Es llamado cuando el usuario abandona el teclado
+        self.cambio_x = 0
 class Plataforma(pygame.sprite.Sprite):
     #Plataforma sobre la que el usuario puede saltar
     def __init__(self, largo, alto ):
@@ -224,102 +319,7 @@ class Nave(pygame.sprite.Sprite):
     def update(self,superficie):
         superficie.blit(self.imagen,self.rect)
 
-class Protagonista(pygame.sprite.Sprite): 
-    #Esta clase representa la barra inferior que controla el protagonista  
-    # -- Atributos 
-    # Establecemos el vector velocidad del protagonista
-    cambio_x = 0
-    cambio_y = 0    
-    # Lista de todos los sprites contra los que podemos botar
-    nivel = None    
-    # -- Métodos
-    def __init__(self,imagen): 
-        #Función Constructor        
-        #  -- Llama al constructor padre 
-        super().__init__()        
-        # Crea una imagen del bloque y lo rellena con color rojo.
-        # También podríamos usar una imagen guardada en disco	
-        largo = 60
-        alto = 60
-        self.image = pygame.image.load(imagen).convert()
-        color= self.image.get_at((0,0))
-        self.image.set_colorkey(color,RLEACCEL)
-        # Establecemos una referencia hacia la imagen rectangular
-        self.rect = self.image.get_rect() 
-      
-    def update(self):
-        global cont
-        #Desplazamos al protagonista
-        # Gravedad
-        self.calc_grav()        
-        # Desplazar izquierda/derecha
-        self.rect.x += self.cambio_x        
-        # Comprobamos si hemos chocado contra algo
-        lista_impactos_bloques = pygame.sprite.spritecollide(self, self.nivel.listade_plataformas, False)
-        lista_impactos_monedas = pygame.sprite.spritecollide(self, self.nivel.listade_monedas, True)
-        for bloque in lista_impactos_bloques:
-            # Si nos estamos desplazando hacia la derecha, hacemos que nuestro lado derecho
-            #sea el lado izquierdo del objeto que hemos tocado-
-            if self.cambio_x > 0:
-                self.rect.right = bloque.rect.left
-            elif self.cambio_x < 0:
-                # En caso contrario, si nos desplazamos hacia la izquierda, hacemos lo opuesto.
-                self.rect.left = bloque.rect.right
-#---------------- comprobamos si hemos cogidos monedas------ y sumamos puntos
-        for money in lista_impactos_monedas:
-            cont+=2 *9
-##            print(cont)
-            
-        # Desplazar arriba/abajo
-        self.rect.y += self.cambio_y        
-        # Comprobamos si hemos chocado contra algo
-        lista_impactos_bloques = pygame.sprite.spritecollide(self, self.nivel.listade_plataformas, False)
-        
-        for bloque in lista_impactos_bloques:
-            # Restablecemos nuestra posición basándonos en la parte superior/inferior del objeto.
-            if self.cambio_y > 0:
-                self.rect.bottom = bloque.rect.top 
-            elif self.cambio_y < 0:
-                self.rect.top = bloque.rect.bottom
-            # Detenemos nuestro movimiento vertical
-            self.cambio_y = 0
-    def devolver(self):
-        return self.nivel.listade_plataformas
-    def calc_grav(self):
-        #Calculamos el efecto de la gravedad 
-        if self.cambio_y == 0:
-            self.cambio_y = 1
-        else:
-            self.cambio_y += .35
-        # Observamos si nos encontramos sobre el suelo. 
-        if self.rect.y >= ALTO_PANTALLA - self.rect.height and self.cambio_y >= 0:
-            self.cambio_y = 0
-            self.rect.y = ALTO_PANTALLA - self.rect.height
 
-    def saltar(self):
-        #Llamado cuando el usuario pulsa el botón de 'saltar'        
-        # Descendemos un poco y observamos si hay una plataforma debajo nuestro.
-        # Descendemos 2 píxels (con una plataforma que está  descendiendo, no funciona bien 
-	# si solo descendemos uno).
-        self.rect.y += 2
-        lista_impactos_plataforma = pygame.sprite.spritecollide(self, self.nivel.listade_plataformas, False)
-        self.rect.y -= 2        
-        # Si está listo para saltar, aumentamos nuestra velocidad hacia arriba
-        if len(lista_impactos_plataforma) > 0 or self.rect.bottom >= ALTO_PANTALLA:
-            self.cambio_y = -10
-            
-    # Movimiento controlado por el protagonista
-    def ir_izquierda(self):
-        #Es llamado cuando el usuario pulsa la flecha izquierda
-        self.cambio_x = -6
-
-    def ir_derecha(self):
-        #Es llamado cuando el usuario pulsa la flecha derecha
-        self.cambio_x = 6
-
-    def stop(self):
-        #Es llamado cuando el usuario abandona el teclado
-        self.cambio_x = 0
 
 class Disparo(pygame.sprite.Sprite):
     def __init__(self,imagen):
