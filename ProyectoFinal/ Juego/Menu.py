@@ -1,4 +1,4 @@
-import pygame,sys
+import pygame,sysimport pygame,sys
 from Clases import Cursor,Boton
 from Survival import bucle_juego
 
@@ -9,7 +9,6 @@ blanco= (255,255,255)
 Puntajes =[] 
 seleccion = 0
 nomPersonaje = ''
-mensaje = ''
 personajeSelec = False
 
 imagen1 = pygame.image.load("botones/botton1.png")
@@ -27,7 +26,8 @@ imagen12 = pygame.image.load("botones/personaje1.png")
 
 
 def opciones(opcion,fuente,ventana):
-    global mensaje,personajeSelec,nomPersonaje
+    global personajeSelec,nomPersonaje
+    mensaje = ''
     posx,posy = 0,0
     if opcion ==1:
         if personajeSelec == True:
@@ -47,6 +47,7 @@ def opciones(opcion,fuente,ventana):
     return mensaje,posx,posy
 
 def personaje(opcion,nombre,boton1,boton2,ventana,cursor,fuente):
+    global personajeSelec
     if opcion == 2:
         boton1.update(ventana,cursor)
         boton2.update(ventana,cursor)
@@ -69,6 +70,7 @@ def record(fuente,ventana):
         contador += 1
         ventana.blit(texto2,(450,50*i+350))
     contador = 0
+
     
 def lecturaP(texto):
     try:
