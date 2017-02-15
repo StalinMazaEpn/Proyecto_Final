@@ -20,6 +20,7 @@ ALTO_PANTALLA = 600
 cont=0
 color = blanco
 total=0
+recogioM = False
 #--------------------------------------CLASES----------------------------------------------------
 class Protagonista(pygame.sprite.Sprite): 
     #Esta clase representa la barra inferior que controla el protagonista  
@@ -53,7 +54,13 @@ class Protagonista(pygame.sprite.Sprite):
         self.rect.x += self.cambio_x        
         # Comprobamos si hemos chocado contra algo
         lista_impactos_bloques = pygame.sprite.spritecollide(self, self.nivel.listade_plataformas, False)
-        lista_impactos_monedas = pygame.sprite.spritecollide(self, self.nivel.listade_monedas, True)
+        impacto = lista_impactos_monedas = pygame.sprite.spritecollide(self, self.nivel.listade_monedas, True)
+        global recogioM
+        if len(impacto) != 0:
+            #print("Impacto",impacto)
+            recogioM = True
+        else:
+            recogioM = False
         for bloque in lista_impactos_bloques:
             # Si nos estamos desplazando hacia la derecha, hacemos que nuestro lado derecho
             #sea el lado izquierdo del objeto que hemos tocado-
@@ -62,10 +69,9 @@ class Protagonista(pygame.sprite.Sprite):
             elif self.cambio_x < 0:
                 # En caso contrario, si nos desplazamos hacia la izquierda, hacemos lo opuesto.
                 self.rect.left = bloque.rect.right
-#---------------- comprobamos si hemos cogidos monedas------ y sumamos puntos
+#---------------- comprobamos si hemos cogidos monedas------ y sumamos puntos       
         for money in lista_impactos_monedas:
-            cont+=2 *9
-##            print(cont)
+            cont+=2 *9            
             
         # Desplazar arriba/abajo
         self.rect.y += self.cambio_y        
@@ -417,25 +423,7 @@ class Disparo(pygame.sprite.Sprite):
        self.rect.move_ip(vx,vy)
     def update(self,superficie):
         superficie.blit(self.imagen,self.rect) 
-
-class Recs(object):
-    def __init__(self,numeroinicial):
-        self.lista=[]        
-        for x in range(numeroinicial):
-            #creo un rect random
-            leftrandom=  random.randrange(LARGO_PANTALLA-100)
-            toprandom= random.randrange(50,ALTO_PANTALLA-120)
-            width= 60
-            height= 15
-            self.lista.append(pygame.Rect(leftrandom,toprandom,width,height))            
-    def pos(self,i):
-        return self.lista[i]    
-    def mover(self,x,y):
-        for rectangulo in self.lista:
-            rectangulo.move_ip(x,y)
-    def pintar(self,superficie):
-        for rectangulo in self.lista:
-            pygame.draw.rect(superficie,verde,rectangulo)        
+   
 
 def colision(player,rec):
     if player.rect.colliderect(rec):
@@ -478,14 +466,17 @@ def bucle_juego(nombrePersonaje):
     disparoActivo = False
     disparoActivo2 = False
     #-----------------------CONTADOR----------------------------------------------
-    fuente1= pygame.font.SysFont("Arial", 30, True, False)
-    info0=fuente1.render("Game is running..",0,(255,255,255))
+    fuente1= pygame.font.SysFont("Arial", 30, True, False)    
     relojC= pygame.time.Clock()
     InicioR = pygame.time.get_ticks()/1000
     segundosint=0 
     #-----------------------personaje----------------------------
     #------------------------------------------
     clock = pygame.time.Clock()# tiempo en de los fotogramas
+    caer= False # define si el personaje cae solo verticalmente    
+    global saltarMovi
+    caer= False # define si el personaje cae solo verticalmente
+    caerMovi=False# define si el personaje cae hacia adelante o hacia atras
     #----------------------MUSICA-----------------------------
     pygame.mixer.music.load('audio/music.mp3')
     pygame.mixer.music.set_endevent(pygame.constants.USEREVENT)
@@ -508,7 +499,7 @@ def bucle_juego(nombrePersonaje):
     lista_sprites_activos.add(protagonista)
     bloques_activos = protagonista.devolver()    
     #Iteramos hasta que el usuario pulse sobre el botón de salida 
-    hecho = False
+    #hecho = False
     # Lo usamos para gestionar cuan rápido se actualiza la pantalla.
     reloj = pygame.time.Clock() 
     #------------------------------
@@ -560,13 +551,17 @@ def bucle_juego(nombrePersonaje):
                 disparoActivo2 = False
         bloques_activos = protagonista.devolver()
         #------------------CONTADOR--------------------------------------
+        global cont,total,recogioM
+        if recogioM == True:
+            total+=cont
         segundosint= pygame.time.get_ticks()/1000        
         TiempoReal = int(segundosint-InicioR)               
         minutos = int(TiempoReal/60)
         segundosR = TiempoReal-(60*minutos)
         minutero=fuente1.render(str(minutos),0,color)
         separacion=fuente1.render(":",0,color) 
-        segundero=fuente1.render(str(segundosR),0,color)        
+        segundero=fuente1.render(str(segundosR),0,color)
+        puntuacion = fuente1.render(str(total),0,color)
         #-------------------------------------------------------             
         #-------------------------------------------------------
         for eventos in pygame.event.get():# determina si el usuario dio presiona salir y cierra el juego
@@ -593,11 +588,10 @@ def bucle_juego(nombrePersonaje):
         lista_sprites_activos.update()        
         # Actualizamos los objetos en este nivel
         nivel_actual.update()
-        # Si el protagonista se aproxima al final de la ventana colisiona con el filo de la ventana
-
+        # Si el protagonista se aproxima al lado derecho, desplazamos su mundo a la izquierda (-x)
         if protagonista.rect.right > LARGO_PANTALLA:
             protagonista.rect.right = LARGO_PANTALLA    
-        # Si el protagonista se aproxima al inicio de la ventana colisiona con el filo de la ventana
+        # Si el protagonista se aproxima al lado izquierdo, desplazamos su mundo a la derecha (+x)
         if protagonista.rect.left < 0:
             protagonista.rect.left = 0
          
@@ -630,12 +624,14 @@ def bucle_juego(nombrePersonaje):
         #------------------------mostrando disparo------------------
         if disparoActivo:
             disparo1.update(screen)
+        if disparoActivo2:
             disparo2.update(screen)
         nave1.update(screen)
         nave2.update(screen)
         screen.blit(minutero,(10,70))
         screen.blit(separacion,(30,70))
         screen.blit(segundero,(50,70))
+        screen.blit(puntuacion,(LARGO_PANTALLA - 50,70))
         pygame.display.flip()#actualiza la pantalla
         reloj.tick(60)        
     pygame.quit()
