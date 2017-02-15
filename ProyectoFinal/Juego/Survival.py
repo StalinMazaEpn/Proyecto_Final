@@ -481,6 +481,7 @@ def bucle_juego(nombrePersonaje):
     fuente1= pygame.font.SysFont("Arial", 30, True, False)
     info0=fuente1.render("Game is running..",0,(255,255,255))
     relojC= pygame.time.Clock()
+    InicioR = pygame.time.get_ticks()/1000
     segundosint=0 
     #-----------------------personaje----------------------------
     #------------------------------------------
@@ -564,16 +565,16 @@ def bucle_juego(nombrePersonaje):
         bloques_activos = protagonista.devolver()
         #------------------CONTADOR--------------------------------------
         segundosint= pygame.time.get_ticks()/1000        
-        segundos = int(segundosint)
-        minutos = int(segundos/60)
-        segundosR = segundos-(60*minutos)
+        TiempoReal = int(segundosint-InicioR)               
+        minutos = int(TiempoReal/60)
+        segundosR = TiempoReal-(60*minutos)
         minutero=fuente1.render(str(minutos),0,color)
         separacion=fuente1.render(":",0,color) 
         segundero=fuente1.render(str(segundosR),0,color)        
         #-------------------------------------------------------             
         #-------------------------------------------------------
         for eventos in pygame.event.get():# determina si el usuario dio presiona salir y cierra el juego
-            if eventos.type == QUIT:
+            if eventos.type == QUIT:                
                 tota()
                 salir = True
                 pygame.quit()#detenemos todos los modulos
