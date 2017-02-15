@@ -607,13 +607,13 @@ def bucle_juego(nombrePersonaje):
         
         #######--------CAMBIAMOS DE NIVEL DE ACUERDO AL NUMERO DE MONEDAS--#####
 
-        if cont >=18:
+        if cont >=100:
             nivel_actual_no = 1
             if nivel_actual_no == 1:
                 cambioN = True
             nivel_actual = listade_niveles[nivel_actual_no]
             protagonista.nivel = nivel_actual            
-        if cont>=40:
+        if cont>=244:
             nivel_actual_no = 2
             if nivel_actual_no == 2:
                 cambioN = True
