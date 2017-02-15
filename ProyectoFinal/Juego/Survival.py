@@ -486,10 +486,6 @@ def bucle_juego(nombrePersonaje):
     #-----------------------personaje----------------------------
     #------------------------------------------
     clock = pygame.time.Clock()# tiempo en de los fotogramas
-    caer= False # define si el personaje cae solo verticalmente    
-    global saltarMovi
-    caer= False # define si el personaje cae solo verticalmente
-    caerMovi=False# define si el personaje cae hacia adelante o hacia atras
     #----------------------MUSICA-----------------------------
     pygame.mixer.music.load('audio/music.mp3')
     pygame.mixer.music.set_endevent(pygame.constants.USEREVENT)
@@ -597,10 +593,11 @@ def bucle_juego(nombrePersonaje):
         lista_sprites_activos.update()        
         # Actualizamos los objetos en este nivel
         nivel_actual.update()
-        # Si el protagonista se aproxima al lado derecho, desplazamos su mundo a la izquierda (-x)
+        # Si el protagonista se aproxima al final de la ventana colisiona con el filo de la ventana
+
         if protagonista.rect.right > LARGO_PANTALLA:
             protagonista.rect.right = LARGO_PANTALLA    
-        # Si el protagonista se aproxima al lado izquierdo, desplazamos su mundo a la derecha (+x)
+        # Si el protagonista se aproxima al inicio de la ventana colisiona con el filo de la ventana
         if protagonista.rect.left < 0:
             protagonista.rect.left = 0
          
